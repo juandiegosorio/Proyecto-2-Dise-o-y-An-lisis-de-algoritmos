@@ -4,8 +4,6 @@ def calculate_LTP(m1:int, m2:int, w1:int, w2:int):
     else:
         return w2 - abs(abs(m1)-abs(m2))%w2
 
-print(calculate_LTP(5,-8,2,3)) # 3
-
 def dijkstra(graph, start):
     # Inicializar las distancias de todos los nodos como infinito
     distances = {node: float('inf') for node in graph}
@@ -50,6 +48,6 @@ def p2 (elementos: list,w1,w2):
                 graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
 
     
-    return atomoosLibres
+    return atomoosLibres, graph, dijkstra(graph, 1)
     
 print(p2([[-3,1],[1,-5]], 2, 3 ))
