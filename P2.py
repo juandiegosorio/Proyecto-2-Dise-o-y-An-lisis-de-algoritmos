@@ -1,8 +1,10 @@
 def calculate_LTP(m1:int, m2:int, w1:int, w2:int):
     if (m1 > 0 and m2 > 0) or (w1 < 0 and w2 < 0):
-        return 1 + abs(m1-m2)%w1
+        return 1 + abs(abs(m1)-abs(m2))%w1
     else:
-        return w2 - abs(m1-m2)%w2
+        return w2 - abs(abs(m1)-abs(m2))%w2
+
+print(calculate_LTP(5,-8,2,3)) # 3
 
 def dijkstra(graph, start):
     # Inicializar las distancias de todos los nodos como infinito
