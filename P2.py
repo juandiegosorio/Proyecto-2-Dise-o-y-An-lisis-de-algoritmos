@@ -31,6 +31,24 @@ def dijkstra(graph, start):
 
     return distances
 
+def floyd_warshall(graph):
+    # Paso 1: Inicializar la matriz de distancias
+    num_nodes = len(graph)
+    distances = [[float('inf')]*num_nodes for _ in range(num_nodes)]
+    for node, edges in graph.items():
+        for neighbour, weight in edges.items():
+            distances[node][neighbour] = weight
+        distances[node][node] = 0
+
+    # Paso 2 y 3: Actualizar la matriz de distancias
+    for k in range(num_nodes):
+        for i in range(num_nodes):
+            for j in range(num_nodes):
+                if distances[i][j] > distances[i][k] + distances[k][j]:
+                    distances[i][j] = distances[i][k] + distances[k][j]
+
+    return distances
+
 def p2 (elementos: list,w1,w2):
     atomoosLibres = []
     for elemento in elementos:
@@ -47,7 +65,6 @@ def p2 (elementos: list,w1,w2):
             if atomo != vecino and atomo*-1 != vecino:
                 graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
 
-    
     return atomoosLibres
     
 print(p2([[-3,1],[1,-5]], 2, 3 ))
