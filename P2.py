@@ -48,7 +48,7 @@ def p2 (elementos: list,w1,w2):
         graph[atomo] = {}
         for vecino in atomoosLibres:
             if atomo != vecino and atomo*-1 != vecino:
-                graph[atomo][vecino] = calculate_ltp(atomo,vecino, w1,w2)
+                graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
 
     
     return atomoosLibres
