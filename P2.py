@@ -19,20 +19,31 @@ def dijkstra(graph, start):
         visited.add(min_node)
 
         # Actualizar las distancias de los nodos adyacentes
-        for neighbor, weight in graph[min_node].items():
-            if distances[min_node] + weight < distances[neighbor]:
-                distances[neighbor] = distances[min_node] + weight
+        for vecino, weight in graph[min_node].items():
+            if distances[min_node] + weight < distances[vecino]:
+                distances[vecino] = distances[min_node] + weight
 
     return distances
 
-# Ejemplo de uso
-graph = {
-    'A': {'B': 5, 'C': 2},
-    'B': {'A': 5, 'C': 1, 'D': 3},
-    'C': {'A': 2, 'B': 1, 'D': 6},
-    'D': {'B': 3, 'C': 6}
-}
 
-start_node = 'A'
-distances = dijkstra(graph, start_node)
-print(distances)
+
+def p2 (elementos: list,w1,w2):
+    atomoosLibres = []
+    for elemento in elementos:
+        for atomoo in elemento:
+            if atomoo not in atomoosLibres:
+                atomoosLibres.append(atomoo)
+            if (atomoo*-1) not in atomoosLibres:
+                atomoosLibres.append(atomoo*-1)
+
+    graph = {}
+    for atomo in atomoosLibres:
+        graph[atomo] = {}
+        for vecino in atomoosLibres:
+            if atomo != vecino and atomo*-1 != vecino:
+                graph[atomo][vecino] = calculate_ltp(atomo,vecino, w1,w2)
+
+    
+    return atomoosLibres
+    
+#print(p2([[-3,1],[1,-5]]))
