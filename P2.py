@@ -2,10 +2,7 @@ def calculate_LTP(m1:int, m2:int, w1:int, w2:int):
     if (m1 > 0 and m2 > 0) or (w1 < 0 and w2 < 0):
         return 1 + abs(m1-m2)%w1
     else:
-        return (w2 - abs(m1-m2))%w2
-
-result = calculate_LTP(5,-8,2,3)
-print(result)
+        return w2 - abs(m1-m2)%w2
 
 def dijkstra(graph, start):
     # Inicializar las distancias de todos los nodos como infinito
@@ -53,4 +50,4 @@ def p2 (elementos: list,w1,w2):
     
     return atomoosLibres
     
-#print(p2([[-3,1],[1,-5]]))
+print(p2([[-3,1],[1,-5]], 2, 3 ))
