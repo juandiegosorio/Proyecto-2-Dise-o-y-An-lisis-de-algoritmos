@@ -48,6 +48,6 @@ def p2 (elementos: list,w1,w2):
                 graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
 
     
-    return atomoosLibres, graph, dijkstra(graph, 1)
+    return atomoosLibres
     
 print(p2([[-3,1],[1,-5]], 2, 3 ))
