@@ -33,7 +33,7 @@ def dijkstra(graph, start):
 
 def floyd_warshall(graph):
     # Paso 1: Inicializar la matriz de distancias
-    num_nodes = len(graph)
+    num_nodes = len(graph.keys())
     distances = [[float('inf')]*num_nodes for _ in range(num_nodes)]
     for node, edges in graph.items():
         for neighbour, weight in edges.items():
