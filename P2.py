@@ -71,6 +71,9 @@ def p2 (elementos: list,w1,w2):
                     encontrado = True
                     #si esta entonces se llama al dijsktra para hallar el camino mas corto para conectar los elementos
                     energia,caminoMinimo = dijkstra(graph,atomo,atomo*-1)
+                    caminoMinimo.remove(caminoMinimo[0])
+
+
                     energiaTotal += energia
 
                     #revisamos si estan en la misma posicion en sus listas
@@ -101,6 +104,11 @@ def arreglarLista(caminos):
         salida.append(inicio)
         salida.append(intermedios)
         salida.append(final)
+    for lista in salida:
+        copia = salida.copy()
+        copia.remove(lista)
+        if lista in copia:
+            salida.remove(lista)
         
     return salida
 
@@ -115,5 +123,5 @@ def arreglarLista(caminos):
 #print(p2([[1,2],[-2,3],[3,-4]],2,3)) # Debe imprimir "NO SE PUEDE"
 resultado, energia = p2([[1,3],[-6,3],[1,7]],3,5)
 print(resultado, energia) # Debe imprimir un peso de 8
-print(arreglarLista(resultado))
+print(arreglarLista(resultado),energia)
 
