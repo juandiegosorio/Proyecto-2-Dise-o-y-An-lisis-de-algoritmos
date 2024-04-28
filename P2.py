@@ -86,8 +86,19 @@ def p2 (elementos: list,w1,w2):
         if encontrado == False:
             return "NO SE PUEDE"
         
-    return resultados
+    return resultados, elementos
     #return atomoosLibres, graph
+
+def arreglarLista(caminos, elementos):
+    salida = []
+    for camino in caminos:
+        inicio, intermedios, final = camino
+        salida.append(inicio)
+        salida.append(intermedios)
+        salida.append(final)
+        otro = salida
+        
+    return salida
 
 # Ejemplo de uso
 #atomos, graph = p2([[1,3],[-6,3],[1,7]], 3, 5)
@@ -98,5 +109,7 @@ def p2 (elementos: list,w1,w2):
 #print("Distancia mínima:", min_distance)
 #print("Camino:", path)
 #print(p2([[1,2],[-2,3],[3,-4]],2,3)) # Debe imprimir "NO SE PUEDE"
-#print(p2([[1,3],[-6,3],[1,7]],3,5)) # Debe imprimir un peso de 8
+resultado, elementos = p2([[1,3],[-6,3],[1,7]],3,5)
+print(resultado) # Debe imprimir un peso de 8
+print(arreglarLista([([1, 3], [1, 7, -1], [7, 1]), ([1, 3], [3, -7, -3], [3, -6])], elementos))
 
