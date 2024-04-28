@@ -57,10 +57,10 @@ def p2 (elementos: list,w1,w2):
     return atomoosLibres, graph
 
 # Ejemplo de uso
-atomos, graph = p2([[1,3],[-6,3],[1,7]], 3, 5)
+atomos, graph = p2([[-6,3],[3,1],[1,7]], 2, 3)
 print("Graph:", graph)
-start_node = 1
-end_node = -1
+start_node = 2
+end_node = 2
 min_distance, path = dijkstra(graph, start_node, end_node)
 print("Distancia mínima:", min_distance)
 print("Camino:", path)
