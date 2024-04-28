@@ -55,6 +55,8 @@ def p2 (elementos: list,w1,w2):
             if atomo != vecino and atomo*-1 != vecino:
                 graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
 
+    elementos_copia = elementos.copy()
+
     encontrado = False
     resultados = []
     #se itera por cada elemento de la lista de elementos
@@ -72,7 +74,6 @@ def p2 (elementos: list,w1,w2):
                     #si esta entonces se llama al dijsktra para hallar el camino mas corto para conectar los elementos
                     energia,caminoMinimo = dijkstra(graph,atomo,atomo*-1)
                     caminoMinimo.remove(caminoMinimo[0])
-
 
                     energiaTotal += energia
 
@@ -94,10 +95,10 @@ def p2 (elementos: list,w1,w2):
         if encontrado == False:
             return "NO SE PUEDE"
         
-    return resultados, energiaTotal
+    return resultados, energiaTotal, elementos_copia
     #return atomoosLibres, graph
 
-def arreglarLista(caminos):
+def arreglarLista(caminos, elementos):
     salida = []
     for camino in caminos:
         inicio, intermedios, final = camino
@@ -110,7 +111,23 @@ def arreglarLista(caminos):
         if lista in copia:
             salida.remove(lista)
         
-    return salida
+    tuplas_salida = list(tuple(x) for x in salida)
+    tuplas_elementos = []
+    for elemento in elementos:
+        tuplas_elementos.append(tuple(elemento))
+        reverse_elemento = elemento.copy()[::-1]
+        tuplas_elementos.append(tuple(reverse_elemento))
+    
+    final = []
+    
+    for i in tuplas_salida:
+        if i in tuplas_elementos:
+            final.append(str(i))
+        else:
+            for j in i:
+                final.append(str(j))
+        
+    return ", ".join(final)
 
 # Ejemplo de uso
 #atomos, graph = p2([[1,3],[-6,3],[1,7]], 3, 5)
@@ -121,7 +138,8 @@ def arreglarLista(caminos):
 #print("Distancia mínima:", min_distance)
 #print("Camino:", path)
 #print(p2([[1,2],[-2,3],[3,-4]],2,3)) # Debe imprimir "NO SE PUEDE"
-resultado, energia = p2([[1,3],[-6,3],[1,7]],3,5)
+resultado, energia, elementos = p2([[1,3],[-6,3],[1,7]],3,5)
+print(elementos)
 print(resultado, energia) # Debe imprimir un peso de 8
-print(arreglarLista(resultado),energia)
+print(arreglarLista(resultado, elementos),energia)
 
