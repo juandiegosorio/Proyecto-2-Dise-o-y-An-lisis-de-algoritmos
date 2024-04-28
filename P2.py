@@ -82,7 +82,11 @@ def p2 (elementos: list,w1,w2):
                         else:
                             nuevaLista.append(elementico[1])
                             nuevaLista.append(atomo)
-                        resultado = (elemento,caminoMinimo,nuevaLista)
+
+                        if elemento[0] == nuevaLista[1]:
+                            resultado = (nuevaLista,caminoMinimo,elemento)
+                        else:
+                            resultado = (elemento,caminoMinimo,nuevaLista)
                         resultados.append(resultado)
         if encontrado == False:
             return "NO SE PUEDE"
