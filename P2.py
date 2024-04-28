@@ -40,7 +40,6 @@ def dijkstra(graph, start, end):
 
 def p2 (elementos: list,w1,w2):
 
-
     atomoosLibres = []
     for elemento in elementos:
         for atomoo in elemento:
@@ -56,7 +55,7 @@ def p2 (elementos: list,w1,w2):
             if atomo != vecino and atomo*-1 != vecino:
                 graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
 
-
+    encontrado = False
     resultados = []
     #se itera por cada elemento de la lista de elementos
     for elemento in elementos:
@@ -64,7 +63,6 @@ def p2 (elementos: list,w1,w2):
         elementos.remove(elemento)
         copia = elementos.copy()
         #por cada atomo del elememnto revisando
-        encontrado = False
         for atomo in elemento:
             #se itera cada elemento de la copia
             for elementico in copia:
@@ -87,6 +85,7 @@ def p2 (elementos: list,w1,w2):
                         resultados.append(resultado)
         if encontrado == False:
             return "NO SE PUEDE"
+        
     return resultados
     #return atomoosLibres, graph
 
@@ -98,5 +97,6 @@ def p2 (elementos: list,w1,w2):
 #min_distance, path = dijkstra(graph, start_node, end_node)
 #print("Distancia mínima:", min_distance)
 #print("Camino:", path)
-print(p2([[1,3],[-6,3],[1,7]],3,5))
+#print(p2([[1,2],[-2,3],[3,-4]],2,3)) # Debe imprimir "NO SE PUEDE"
+#print(p2([[1,3],[-6,3],[1,7]],3,5)) # Debe imprimir un peso de 8
 
