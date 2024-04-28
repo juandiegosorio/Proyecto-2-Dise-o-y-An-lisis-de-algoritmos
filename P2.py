@@ -1,53 +1,42 @@
+import heapq
+
 def calculate_LTP(m1:int, m2:int, w1:int, w2:int):
-    if (m1 > 0 and m2 > 0) or (w1 < 0 and w2 < 0):
-        return 1 + abs(abs(m1)-abs(m2))%w1
+    if ((m1 > 0 and m2 > 0) or (m1 < 0 and m2 < 0)):
+        return 1 + (abs(abs(m1)-abs(m2))%w1)
     else:
-        return w2 - abs(abs(m1)-abs(m2))%w2
+        return w2 - (abs(abs(m1)-abs(m2))%w2)
 
-def dijkstra(graph, start):
-    # Inicializar las distancias de todos los nodos como infinito
+def dijkstra(graph, start, end):
+    # Diccionarios para guardar las distancias y los caminos
     distances = {node: float('inf') for node in graph}
-    # La distancia del nodo de inicio a sí mismo es 0
+    previous_nodes = {node: None for node in graph}
     distances[start] = 0
-    # Mantener un conjunto de nodos visitados
-    visited = set()
+    # Usar heap para almacenar todos los nodos y sus distancias actuales
+    nodes = [(0, start)]
 
-    while visited != set(graph):
-        # Encontrar el nodo con la distancia mínima no visitado
-        min_distance = float('inf')
-        min_node = None
-        for node in graph:
-            if node not in visited and distances[node] < min_distance:
-                min_distance = distances[node]
-                min_node = node
+    while nodes:
+        current_distance, current_node = heapq.heappop(nodes)
 
-        # Marcar el nodo actual como visitado
-        visited.add(min_node)
+        # Si llegamos al nodo final, reconstruir el camino
+        if current_node == end:
+            path = []
+            while previous_nodes[current_node]:
+                path.append(current_node)
+                current_node = previous_nodes[current_node]
+            path.append(current_node)
+            return distances[end], path[::-1]
 
-        # Actualizar las distancias de los nodos adyacentes
-        for vecino, weight in graph[min_node].items():
-            if distances[min_node] + weight < distances[vecino]:
-                distances[vecino] = distances[min_node] + weight
+        # Visitamos los vecinos del nodo actual
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
 
-    return distances
+            # Solo considerar este nuevo camino si es mejor
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                previous_nodes[neighbor] = current_node
+                heapq.heappush(nodes, (distance, neighbor))
 
-def floyd_warshall(graph):
-    # Paso 1: Inicializar la matriz de distancias
-    num_nodes = len(graph.keys())
-    distances = [[float('inf')]*num_nodes for _ in range(num_nodes)]
-    for node, edges in graph.items():
-        for neighbour, weight in edges.items():
-            distances[node][neighbour] = weight
-        distances[node][node] = 0
-
-    # Paso 2 y 3: Actualizar la matriz de distancias
-    for k in range(num_nodes):
-        for i in range(num_nodes):
-            for j in range(num_nodes):
-                if distances[i][j] > distances[i][k] + distances[k][j]:
-                    distances[i][j] = distances[i][k] + distances[k][j]
-
-    return distances
+    return float("inf"), []
 
 def p2 (elementos: list,w1,w2):
     atomoosLibres = []
@@ -65,6 +54,13 @@ def p2 (elementos: list,w1,w2):
             if atomo != vecino and atomo*-1 != vecino:
                 graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
 
-    return atomoosLibres
-    
-print(p2([[-3,1],[1,-5]], 2, 3 ))
+    return atomoosLibres, graph
+
+# Ejemplo de uso
+atomos, graph = p2([[1,3],[-6,3],[1,7]], 3, 5)
+print("Graph:", graph)
+start_node = 1
+end_node = -1
+min_distance, path = dijkstra(graph, start_node, end_node)
+print("Distancia mínima:", min_distance)
+print("Camino:", path)
