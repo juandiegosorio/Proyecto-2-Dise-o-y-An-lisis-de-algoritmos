@@ -39,7 +39,7 @@ def dijkstra(graph, start, end):
     return float("inf"), []
 
 def p2 (elementos: list,w1,w2):
-
+    energiaTotal =0
     atomoosLibres = []
     for elemento in elementos:
         for atomoo in elemento:
@@ -71,6 +71,7 @@ def p2 (elementos: list,w1,w2):
                     encontrado = True
                     #si esta entonces se llama al dijsktra para hallar el camino mas corto para conectar los elementos
                     energia,caminoMinimo = dijkstra(graph,atomo,atomo*-1)
+                    energiaTotal += energia
 
                     #revisamos si estan en la misma posicion en sus listas
                     if elemento.index(atomo) == elementico.index(atomo):
@@ -81,12 +82,16 @@ def p2 (elementos: list,w1,w2):
                         else:
                             nuevaLista.append(elementico[1])
                             nuevaLista.append(atomo)
-                        resultado = (elemento,caminoMinimo,nuevaLista,energia)
+
+                        if elemento[0] == nuevaLista[1]:
+                            resultado = (nuevaLista,caminoMinimo,elemento)
+                        else:
+                            resultado = (elemento,caminoMinimo,nuevaLista)
                         resultados.append(resultado)
         if encontrado == False:
             return "NO SE PUEDE"
         
-    return resultados, elementos
+    return resultados, energiaTotal
     #return atomoosLibres, graph
 
 def arreglarLista(caminos, elementos):
