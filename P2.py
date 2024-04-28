@@ -64,11 +64,13 @@ def p2 (elementos: list,w1,w2):
         elementos.remove(elemento)
         copia = elementos.copy()
         #por cada atomo del elememnto revisando
+        encontrado = False
         for atomo in elemento:
             #se itera cada elemento de la copia
             for elementico in copia:
                 #se revisa si el atomo del elemento que estamos revisando se encuentra en alguno otro elemento
                 if atomo in elementico:
+                    encontrado = True
                     #si esta entonces se llama al dijsktra para hallar el camino mas corto para conectar los elementos
                     energia,caminoMinimo = dijkstra(graph,atomo,atomo*-1)
 
@@ -83,6 +85,8 @@ def p2 (elementos: list,w1,w2):
                             nuevaLista.append(atomo)
                         resultado = (elemento,caminoMinimo,nuevaLista,energia)
                         resultados.append(resultado)
+        if encontrado == False:
+            return "NO SE PUEDE"
     return resultados
     #return atomoosLibres, graph
 
