@@ -155,7 +155,7 @@ def main_tiempo(name_file):
                 print(" ".join(map(str, respuesta)))
             else:
                 print(str(respuesta))
-            print("Tiempo de ejecución:", (fin-inicio)*1000)
+            print("Tiempo de ejecución:", (fin-inicio))
             linea = file.readline().strip()
 
 
