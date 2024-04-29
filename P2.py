@@ -1,4 +1,5 @@
 import heapq
+import sys
 
 def calculate_LTP(m1:int, m2:int, w1:int, w2:int):
     if ((m1 > 0 and m2 > 0) or (m1 < 0 and m2 < 0)):
@@ -94,8 +95,9 @@ def p2 (elementos: list,w1,w2):
                         resultados.append(resultado)
         if encontrado == False:
             return "NO SE PUEDE"
+    respuesta_arreglada = arreglarLista(resultados, elementos_copia)
         
-    return resultados, energiaTotal, elementos_copia
+    return respuesta_arreglada, energiaTotal 
     #return atomoosLibres, graph
 
 def arreglarLista(caminos, elementos):
@@ -129,6 +131,26 @@ def arreglarLista(caminos, elementos):
         
     return ", ".join(final)
 
+
+def main():
+    linea = sys.stdin.readline().strip()
+    ncasos = int(linea)
+    linea = sys.stdin.readline().strip()
+    for _ in range(0,ncasos):
+        n, w1, w2 = map(int, linea.split())
+        compuestos = []
+        for _ in range(n):
+            a, b = map(int, sys.stdin.readline().strip().split())
+            compuestos.append([a, b])
+        respuesta = p2(compuestos,w1, w2)
+        if isinstance(respuesta,tuple):
+            print(str(respuesta[0]) + " " + str(respuesta[1]))
+        else:
+            print(str(respuesta))
+        linea = sys.stdin.readline().strip()
+
+
+main()
 # Ejemplo de uso
 #atomos, graph = p2([[1,3],[-6,3],[1,7]], 3, 5)
 #print("Graph:", graph)
@@ -138,8 +160,8 @@ def arreglarLista(caminos, elementos):
 #print("Distancia mínima:", min_distance)
 #print("Camino:", path)
 #print(p2([[1,2],[-2,3],[3,-4]],2,3)) # Debe imprimir "NO SE PUEDE"
-resultado, energia, elementos = p2([[1,3],[-6,3],[1,7]],3,5)
-print(elementos)
-print(resultado, energia) # Debe imprimir un peso de 8
-print(arreglarLista(resultado, elementos),energia)
+#esultado, energia = p2([[1,3],[-6,3],[1,7]],3,5)
+#print(elementos)
+#print(resultado, energia) # Debe imprimir un peso de 8
+#print(arreglarLista(resultado, elementos),energia)
 
