@@ -171,7 +171,7 @@ def main():
             compuestos.append([a, b])
         respuesta = p2(compuestos,w1, w2)
         if isinstance(respuesta,tuple):
-            print(str(respuesta[0]) + " " + str(respuesta[1]))
+            print(" ".join(map(str, respuesta)))
         else:
             print(str(respuesta))
         linea = sys.stdin.readline().strip()
