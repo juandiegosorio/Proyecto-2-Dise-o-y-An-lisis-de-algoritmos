@@ -152,7 +152,7 @@ def main_tiempo(name_file):
             respuesta = p2(compuestos,w1, w2)
             fin = time.time()
             if isinstance(respuesta,tuple):
-                print(str(respuesta[0]) + " " + str(respuesta[1]))
+                print(" ".join(map(str, respuesta)))
             else:
                 print(str(respuesta))
             print("Tiempo de ejecución:", (fin-inicio)*1000)
