@@ -131,6 +131,28 @@ def arreglarLista(caminos, elementos):
         
     return ", ".join(final)
 
+def main_tiempo(name_file):
+    import time
+    with open(name_file, "r") as file:
+        linea = file.readline().strip()
+        ncasos = int(linea)
+        linea = file.readline().strip()
+        for _ in range(0,ncasos):
+            n, w1, w2 = map(int, linea.split())
+            compuestos = []
+            for _ in range(n):
+                a, b = map(int, file.readline().strip().split())
+                compuestos.append([a, b])
+            inicio = time.time()
+            respuesta = p2(compuestos,w1, w2)
+            fin = time.time()
+            if isinstance(respuesta,tuple):
+                print(str(respuesta[0]) + " " + str(respuesta[1]))
+            else:
+                print(str(respuesta))
+            print("Tiempo de ejecución:", (fin-inicio)*1000)
+            linea = file.readline().strip()
+
 
 def main():
     linea = sys.stdin.readline().strip()
@@ -150,7 +172,7 @@ def main():
         linea = sys.stdin.readline().strip()
 
 
-main()
+main_tiempo("1000.in")
 # Ejemplo de uso
 #atomos, graph = p2([[1,3],[-6,3],[1,7]], 3, 5)
 #print("Graph:", graph)
