@@ -1,6 +1,6 @@
 import heapq
 import sys
-
+import time
 def calculate_LTP(m1:int, m2:int, w1:int, w2:int):
     if ((m1 > 0 and m2 > 0) or (m1 < 0 and m2 < 0)):
         return 1 + (abs(abs(m1)-abs(m2))%w1)
@@ -39,70 +39,90 @@ def dijkstra(graph, start, end):
 
     return float("inf"), []
 
-def p2 (elementos: list,w1,w2):
-    energiaTotal =0
-    atomoosLibres = []
-    for elemento in elementos:
-        for atomoo in elemento:
-            if atomoo not in atomoosLibres:
-                atomoosLibres.append(atomoo)
-            if (atomoo*-1) not in atomoosLibres:
-                atomoosLibres.append(atomoo*-1)
+def p2 (elementos: list,w1,w2, tiempo_inicio):
+    tiempo_actual = time.time()
+    tiempo_transcurrido = tiempo_actual - tiempo_inicio
+    try:
 
-    graph = {}
-    for atomo in atomoosLibres:
-        graph[atomo] = {}
-        for vecino in atomoosLibres:
-            if atomo != vecino and atomo*-1 != vecino:
-                graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
-
-    elementos_copia = elementos.copy()
-
-    encontrado = False
-    resultados = []
-    #se itera por cada elemento de la lista de elementos
-    for elemento in elementos:
-        #se crea una copia de la lista de elementos eliminando el elemento a revisar
-        elementos.remove(elemento)
-        copia = elementos.copy()
-        #por cada atomo del elememnto revisando
-        for atomo in elemento:
-            #se itera cada elemento de la copia
-            for elementico in copia:
-                #se revisa si el atomo del elemento que estamos revisando se encuentra en alguno otro elemento
-                if atomo in elementico:
-                    encontrado = True
-                    #si esta entonces se llama al dijsktra para hallar el camino mas corto para conectar los elementos
-                    energia,caminoMinimo = dijkstra(graph,atomo,atomo*-1)
-
-                    caminoMinimo.remove(caminoMinimo[0])
-
-                    energiaTotal += energia
-
-                    #revisamos si estan en la misma posicion en sus listas
-                    if elemento.index(atomo) == elementico.index(atomo):
-                        nuevaLista = []
-                        if elementico.index(atomo) == 1:
-                            nuevaLista.append(atomo)
-                            nuevaLista.append(elementico[0])
-                        else:
-                            nuevaLista.append(elementico[1])
-                            nuevaLista.append(atomo)
-
-                        if elemento[0] == nuevaLista[1]:
-                            resultado = (nuevaLista,caminoMinimo,elemento)
-                        else:
-                            resultado = (elemento,caminoMinimo,nuevaLista)
-                    elif elemento[0] == elementico[1]:
-                            resultado = (elementico,caminoMinimo,elemento)
-                    else:
-                            resultado = (elemento,caminoMinimo,elementico)        
-
-                    resultados.append(resultado)
-        if encontrado == False:
+        if tiempo_transcurrido > 500.0:
             return "NO SE PUEDE"
-    respuesta_arreglada = arreglarLista(resultados, elementos_copia)
-    return respuesta_arreglada, energiaTotal 
+        concurrencia = {}
+
+        energiaTotal =0
+        atomoosLibres = []
+        for elemento in elementos:
+            for atomoo in elemento:
+                if str(atomoo).strip() not in concurrencia:
+                    concurrencia[str(atomoo).strip()] = 0
+                concurrencia[str(atomoo).strip()] +=1
+                if atomoo not in atomoosLibres:
+                    atomoosLibres.append(atomoo)
+                if (atomoo*-1) not in atomoosLibres:
+                    atomoosLibres.append(atomoo*-1)
+
+        atomosConcurrenciaImpar = 0           
+        for atomo in concurrencia:
+            if concurrencia[atomo] %2 !=0:
+                atomosConcurrenciaImpar +=1
+        if atomosConcurrenciaImpar>2:
+            return "NO SE PUEDE"
+        
+        graph = {}
+        for atomo in atomoosLibres:
+            graph[atomo] = {}
+            for vecino in atomoosLibres:
+                if atomo != vecino and atomo*-1 != vecino:
+                    graph[atomo][vecino] = calculate_LTP(atomo,vecino, w1,w2)
+
+        elementos_copia = elementos.copy()
+
+        encontrado = False
+        resultados = []
+        #se itera por cada elemento de la lista de elementos
+        for elemento in elementos:
+            #se crea una copia de la lista de elementos eliminando el elemento a revisar
+            elementos.remove(elemento)
+            copia = elementos.copy()
+            #por cada atomo del elememnto revisando
+            for atomo in elemento:
+                #se itera cada elemento de la copia
+                for elementico in copia:
+                    #se revisa si el atomo del elemento que estamos revisando se encuentra en alguno otro elemento
+                    if atomo in elementico:
+                        encontrado = True
+                        #si esta entonces se llama al dijsktra para hallar el camino mas corto para conectar los elementos
+                        energia,caminoMinimo = dijkstra(graph,atomo,atomo*-1)
+
+                        caminoMinimo.remove(caminoMinimo[0])
+
+                        energiaTotal += energia
+
+                        #revisamos si estan en la misma posicion en sus listas
+                        if elemento.index(atomo) == elementico.index(atomo):
+                            nuevaLista = []
+                            if elementico.index(atomo) == 1:
+                                nuevaLista.append(atomo)
+                                nuevaLista.append(elementico[0])
+                            else:
+                                nuevaLista.append(elementico[1])
+                                nuevaLista.append(atomo)
+
+                            if elemento[0] == nuevaLista[1]:
+                                resultado = (nuevaLista,caminoMinimo,elemento)
+                            else:
+                                resultado = (elemento,caminoMinimo,nuevaLista)
+                        elif elemento[0] == elementico[1]:
+                                resultado = (elementico,caminoMinimo,elemento)
+                        else:
+                                resultado = (elemento,caminoMinimo,elementico)        
+
+                        resultados.append(resultado)
+            if encontrado == False:
+                return "NO SE PUEDE"
+        respuesta_arreglada = arreglarLista(resultados, elementos_copia)
+        return respuesta_arreglada, energiaTotal
+    except Exception as e:
+        return "UUU NO SE PUEDE" + " " + e
     #return atomoosLibres, graph
 
 def arreglarLista(caminos, elementos):
@@ -160,24 +180,30 @@ def main_tiempo(name_file):
 
 
 def main():
-    linea = sys.stdin.readline().strip()
-    ncasos = int(linea)
-    linea = sys.stdin.readline().strip()
-    for _ in range(0,ncasos):
-        n, w1, w2 = map(int, linea.split())
-        compuestos = []
-        for _ in range(n):
-            a, b = map(int, sys.stdin.readline().strip().split())
-            compuestos.append([a, b])
-        respuesta = p2(compuestos,w1, w2)
-        if isinstance(respuesta,tuple):
-            print(" ".join(map(str, respuesta)))
-        else:
-            print(str(respuesta))
+    try:
+        tiempo_inicio = time.time()  # Captura el tiempo justo antes de comenzar la ejecución de main()
+
         linea = sys.stdin.readline().strip()
+        ncasos = int(linea)
+        linea = sys.stdin.readline().strip()
+        for _ in range(0,ncasos):
+            n, w1, w2 = map(int, linea.split())
+            compuestos = []
+            for _ in range(n):
+                a, b = map(int, sys.stdin.readline().strip().split())
+                compuestos.append([a, b])
+            respuesta = p2(compuestos,w1, w2, tiempo_inicio)
+            if isinstance(respuesta,tuple):
+                print(" ".join(map(str, respuesta)))
+            else:
+                print(str(respuesta))
+            linea = sys.stdin.readline().strip()
+    except Exception as e:
+        print("EEEPAAA NO SE PUEDE", e)
 
+main()
+#main_tiempo("1000.in")
 
-main_tiempo("1000.in")
 # Ejemplo de uso
 #atomos, graph = p2([[1,3],[-6,3],[1,7]], 3, 5)
 #print("Graph:", graph)
